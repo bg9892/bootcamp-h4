@@ -177,7 +177,9 @@ function endGanme() {
     labelEl.textContent = "Highscore: " + score + " out of 5";
     highscore = localStorage.getItem("highscore");
     name = localStorage.getItem("name");
-    scoreDiv.textContent = "Last score: " + name + " : " + highscore;
+    if (name && highscore !== null) {
+        scoreDiv.textContent = "Last score: " + name + " : " + highscore;
+    }
 }
 
 //Store our score and name in local storage
