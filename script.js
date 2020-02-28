@@ -1,7 +1,8 @@
+// Global variables
 var index = 0;
-var interval;
-var secondsLeft = 60;
 var score = 0;
+var secondsLeft = 60;
+var interval;
 var highscore;
 var name;
 var body = document.body;
@@ -9,6 +10,7 @@ var body = document.body;
 var navEl = document.querySelector("#nav-div");
 var divEl = document.querySelector("#first-div");
 
+// Create all our html elements
 var timeEl = document.createElement("h4");
 var startEl = document.createElement("h4");
 var qustionEl = document.createElement("p");
@@ -22,6 +24,7 @@ var inputEl = document.createElement("input");
 var submitBtn = document.createElement("button");
 var scoreDiv = document.createElement("div");
 
+// Give our elements class names
 timeEl.className = "pt-1";
 startEl.className = "start";
 qustionEl.className = "question";
@@ -35,11 +38,13 @@ inputEl.className = "ml-4";
 submitBtn.className = "btn btn-primary ml-4";
 scoreDiv.className = "mt-4 ml-4"
 
+//Set the text content to these elements initially
 startEl.textContent = "Try to answer the following questions within the time limit. Keep in mind that incorrect answers will penalize your scoretime by 10 seconds!"
 startBtn.textContent = "Start";
 inputEl.placeholder = "Initials";
 submitBtn.textContent = "Submit"
 
+// Append our elements to the page
 navEl.appendChild(timeEl);
 divEl.prepend(startEl);
 divEl.appendChild(startBtn);
@@ -53,11 +58,13 @@ divEl.appendChild(inputEl);
 divEl.appendChild(submitBtn);
 divEl.appendChild(scoreDiv);
 
+//Give our buttons values to be used for right or wrong answer logic
 btn1.value = "0";
 btn2.value = "1";
 btn3.value = "2";
 btn4.value = "3";
 
+//Hide these elements initially
 qustionEl.hidden = true;
 btn1.hidden = true;
 btn2.hidden = true;
@@ -68,6 +75,7 @@ inputEl.hidden = true;
 submitBtn.hidden = true;
 scoreDiv.hidden = true;
 
+//Object for all of our questions and answers
 var questions = [
     { q: 'Inside which HTML element do we put the Javascript?', a: ['<js>', '<script>', '<scripting>', '<javascript>'], ca: '1' },
     { q: 'How do you write "Hello World" in an alert box?', a: ['masBox("Hello World");', 'alertBox("Hello World");', 'msg("Hello World");', 'alert("Hello World");'], ca: '3' },
@@ -76,8 +84,8 @@ var questions = [
     { q: 'How does a FOR loop start?', a: ['for (var i = 0; i < 5; i++)', 'for var i = 0 to 5', 'for (i < 5; i++)', 'for (i = 0; i < 5)'], ca: '0' },
 ];
 
+//When start button is clicked hide or show certain elements, then start our timer and call askQuestions function
 startBtn.addEventListener("click", function () {
-    startTimer();
     score = 0;
     startEl.hidden = true;
     startBtn.hidden = true;
@@ -90,9 +98,11 @@ startBtn.addEventListener("click", function () {
     inputEl.hidden = true;
     submitBtn.hidden = true;
     scoreDiv.hidden = true;
+    startTimer();
     askQuestions(index);
 })
 
+//Check which answer button is clicked. Check if button value == question object index then update score and call next question.
 divEl.addEventListener("click", function (event) {
     if (event.target.matches(".answer")) {          
         var buttonClicked = event.target.value;
@@ -120,6 +130,7 @@ divEl.addEventListener("click", function (event) {
     }
 })
 
+//Start our timer with 1 sec interval
 function startTimer() {
     interval = setInterval(function () {
         secondsLeft--;
@@ -132,10 +143,12 @@ function startTimer() {
     }, 1000);
 }
 
+//Update html time element
 function timeLeft() {
     timeEl.textContent =  secondsLeft;
 }
 
+//Set answer buttons == to question object index
 function askQuestions(index) {
     qustionEl.textContent = questions[index].q;
     btn1.textContent = questions[index].a[0];
@@ -144,6 +157,7 @@ function askQuestions(index) {
     btn4.textContent = questions[index].a[3];
 }
 
+//When time runs out or all questions answered call this function to end the game and update our elements, score, and local storage.
 function endGanme() {
     startEl.textContent = "Game Over";
     startEl.hidden = false;
@@ -152,20 +166,21 @@ function endGanme() {
     btn2.hidden = true;
     btn3.hidden = true;
     btn4.hidden = true;
-    startBtn.textContent = "Restart"
     startBtn.hidden = false;
-    secondsLeft= 60;
-    index = 0;
     labelEl.hidden = false;
     inputEl.hidden = false;
     submitBtn.hidden = false;
     scoreDiv.hidden = false;
+    startBtn.textContent = "Restart"
+    secondsLeft= 60;
+    index = 0;
     labelEl.textContent = "Highscore: " + score + " out of 5";
     highscore = localStorage.getItem("highscore");
     name = localStorage.getItem("name");
     scoreDiv.textContent = "Last score: " + name + " : " + highscore;
 }
 
+//Store our score and name in local storage
 submitBtn.addEventListener("click", function() {
     localStorage.setItem("highscore", score);
     localStorage.setItem("name", inputEl.value);
