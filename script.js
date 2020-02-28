@@ -186,12 +186,11 @@ function endGanme() {
 submitBtn.addEventListener("click", function() {
     localStorage.setItem("highscore", score);
     localStorage.setItem("name", inputEl.value);
-    name = inputEl.value;
 })
 
 // Style elements
-body.setAttribute("style", "background: #999;");
-timeEl.setAttribute("style", "color: #fff;");
+timeEl.style.color = "#fff";
+body.style.background = "#999";
 inputEl.style.maxWidth = "90px";
 btn1.style.minWidth = "200px";
 btn2.style.minWidth = "200px";
